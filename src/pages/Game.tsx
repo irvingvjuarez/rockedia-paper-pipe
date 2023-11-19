@@ -1,11 +1,11 @@
 import { useRef } from 'react'
 import { GestureRecognizer, FilesetResolver } from "@mediapipe/tasks-vision"
-import './App.css'
+// import './App.css'
 import { Camera } from '@mediapipe/camera_utils';
 
 let gestureRecognizer: GestureRecognizer;
 
-function App() {
+function Game() {
   const videoRef = useRef<null | HTMLVideoElement>(null);
   let camera: unknown;
 
@@ -48,4 +48,4 @@ function App() {
   )
 }
 
-export default App
+export default Game
