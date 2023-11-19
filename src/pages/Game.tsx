@@ -1,7 +1,8 @@
 import { useRef } from 'react'
-import { GestureRecognizer, FilesetResolver } from "@mediapipe/tasks-vision"
-// import './App.css'
+import { GestureRecognizer } from "@mediapipe/tasks-vision"
+import '../App.css'
 import { Camera } from '@mediapipe/camera_utils';
+import loadGestureRecognizer from '../utils/loadGestureRecognizer';
 
 let gestureRecognizer: GestureRecognizer;
 
@@ -13,24 +14,8 @@ function Game() {
 
   }
 
-  const loadGestureRecognizer = async () => {
-    const vision = await FilesetResolver.forVisionTasks(
-      "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0/wasm"
-    );
-
-    gestureRecognizer = await GestureRecognizer.createFromOptions(
-      vision,
-      {
-        baseOptions: {
-          modelAssetPath: "https://assets.codepen.io/9177687/rock_paper_scissor.task",
-          numHands: 1
-        }
-      }
-    )
-  }
-
   const handleStart = async () => {
-    await loadGestureRecognizer()
+    gestureRecognizer = await loadGestureRecognizer()
     console.log('gesture recognizer ready!')
     // camera = new Camera(videoRef.current as HTMLVideoElement, {
     //   onFrame: handleCameraFraming,
