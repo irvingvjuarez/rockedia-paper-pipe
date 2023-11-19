@@ -1,12 +1,8 @@
 import { Camera } from "@mediapipe/camera_utils";
 
-async function handleCameraFraming () {
-
-}
-
-function initCamera(htmlEl: HTMLVideoElement): Camera {
+function initCamera(htmlEl: HTMLVideoElement, onCameraFraming: () => Promise<void>): Camera {
     const camera = new Camera(htmlEl, {
-      onFrame: handleCameraFraming,
+      onFrame: onCameraFraming,
       width: 1280,
       height: 720
     });
