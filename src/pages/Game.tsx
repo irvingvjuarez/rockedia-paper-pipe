@@ -6,35 +6,38 @@ import loadGestureRecognizer from '../utils/loadGestureRecognizer';
 import initCamera from '../utils/initCamera';
 import useCamera from '../hooks/useCamera';
 import getRandomGesture from '../utils/getRandomGesture';
+import Loader from '../components/Loader';
 
 let gestureRecognizer: GestureRecognizer;
 
 enum StatusEnum {
   'idle',
   'error',
-  'success'
+  'success',
+  'init'
 }
 
 type State = {
-  status: StatusEnum.error | StatusEnum.idle | StatusEnum.success,
+  status: StatusEnum.error | StatusEnum.idle | StatusEnum.success | StatusEnum.init,
   payload: unknown
 };
 
 function Game() {
-  const [state, setState] = useState<State>({status: StatusEnum.idle, payload: null});
+  const [state, setState] = useState<State>({status: StatusEnum.init, payload: null});
   const videoRef = useRef<null | HTMLVideoElement>(null);
   const {getFramingHandler} = useCamera();
   let camera: Camera;
 
   const handleStart = async () => {
     try {
+      setState(({payload}) => ({status: StatusEnum.idle, payload}))
       gestureRecognizer = await loadGestureRecognizer()
 
-      setState(({payload}) => ({status: StatusEnum.success, payload}))
       camera = initCamera(
         videoRef.current as HTMLVideoElement,
         getFramingHandler(gestureRecognizer, videoRef.current as HTMLVideoElement)
       );
+      setState(({payload}) => ({status: StatusEnum.success, payload}))
       await camera.start()
     } catch(error) {
       setState(() => ({status: StatusEnum.error, payload: error}));
@@ -47,20 +50,33 @@ function Game() {
 
   return (
     <div className='game'>
-      {/* <video playsInline ref={videoRef}></video> */}
       <section className='game-players'>
-        <article>
-          <span>Computer</span>
+        <article className='player-frame'>
+          <span className='player-title'>Computer</span>
           <div className='game-player'>
             <img className='bot-avatar' src={getRandomGesture()} alt="" />
           </div>
         </article>
 
-        <article>
-          <span>You</span>
-          <div className='game-player'>
-            <img className='user-avatar' src={getRandomGesture()} alt="" />
-          </div>
+        <article className='player-frame'>
+          <span className='player-title'>You</span>
+
+          {state.status === StatusEnum.idle && (
+            <Loader />
+          )}
+
+          <video
+            hidden={state.status === StatusEnum.success ? false : true}
+            playsInline
+            ref={videoRef}
+            className='video'
+          ></video>
+
+          {state.status === StatusEnum.init && (
+            <div className='game-player'>
+              <img className='user-avatar' src={getRandomGesture()} alt="" />
+            </div>
+          )}
         </article>
       </section>
 

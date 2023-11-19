@@ -87,6 +87,18 @@ button:focus-visible {
   margin: 0 auto;
 }
 
+.player-frame {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 280px;
+}
+
+.player-title {
+  margin-block: 10px;
+}
+
 .game-player {
   width: var(--player-size);
   height: var(--player-size);
@@ -112,9 +124,18 @@ button:focus-visible {
   transform: rotate(-25deg);
 }
 
+.video {
+  width: 100%;
+  height: 100%;
+}
+
 @media screen and (min-width: 500px) {
   .game-players {
     flex-direction: row;
+  }
+
+  .player-frame {
+    width: 50%;
   }
 }
 
@@ -128,5 +149,53 @@ button:focus-visible {
   }
   button {
     background-color: #f9f9f9;
+  }
+}
+
+
+/* LOADER */
+.loader {
+  width: 100%;
+  height: 100%;
+  background-color: cadetblue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.lds-facebook {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+.lds-facebook div {
+  display: inline-block;
+  position: absolute;
+  left: 8px;
+  width: 16px;
+  background: #fff;
+  animation: lds-facebook 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
+}
+.lds-facebook div:nth-child(1) {
+  left: 8px;
+  animation-delay: -0.24s;
+}
+.lds-facebook div:nth-child(2) {
+  left: 32px;
+  animation-delay: -0.12s;
+}
+.lds-facebook div:nth-child(3) {
+  left: 56px;
+  animation-delay: 0;
+}
+@keyframes lds-facebook {
+  0% {
+    top: 8px;
+    height: 64px;
+  }
+  50%, 100% {
+    top: 24px;
+    height: 32px;
   }
 }
