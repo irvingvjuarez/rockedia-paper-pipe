@@ -1,27 +1,40 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { GestureRecognizer } from "@mediapipe/tasks-vision"
 import '../App.css'
 import { Camera } from '@mediapipe/camera_utils';
 import loadGestureRecognizer from '../utils/loadGestureRecognizer';
+import initCamera from '../utils/initCamera';
 
 let gestureRecognizer: GestureRecognizer;
 
+enum StatusEnum {
+  'idle',
+  'error',
+  'success'
+}
+
+type State = {
+  status: StatusEnum.error | StatusEnum.idle | StatusEnum.success,
+  payload: unknown
+};
+
 function Game() {
+  const [state, setState] = useState<State>({status: StatusEnum.idle, payload: null});
   const videoRef = useRef<null | HTMLVideoElement>(null);
-  let camera: unknown;
-
-  const handleCameraFraming = async () => {
-
-  }
+  let camera: Camera;
 
   const handleStart = async () => {
-    gestureRecognizer = await loadGestureRecognizer()
-    console.log('gesture recognizer ready!')
-    // camera = new Camera(videoRef.current as HTMLVideoElement, {
-    //   onFrame: handleCameraFraming,
-    //   width: 1280,
-    //   height: 720
-    // }).start()
+    try {
+      gestureRecognizer = await loadGestureRecognizer()
+      camera = initCamera(videoRef.current as HTMLVideoElement);
+      await camera.start()
+    } catch(error) {
+      setState(() => ({status: StatusEnum.error, payload: error}));
+    }
+  }
+
+  if (state.status === StatusEnum.error) {
+    throw new Error((state.payload as Error).message);
   }
 
   return (
