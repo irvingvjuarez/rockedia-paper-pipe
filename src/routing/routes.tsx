@@ -1,14 +1,17 @@
+import ErrorHandler from "../components/ErrorHandler";
 import Game from "../pages/Game";
 import Home from "../pages/Home";
 
 const routes = [
     {
         "path": "/",
-        element: <Home />
+        element: <Home />,
+        errorElement: <ErrorHandler />
     },
     {
         "path": "/game",
-        element: <Game />
+        element: <Game />,
+        errorElement: <ErrorHandler />
     }
 ]
 
