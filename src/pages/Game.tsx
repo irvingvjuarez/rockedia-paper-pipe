@@ -5,6 +5,7 @@ import { Camera } from '@mediapipe/camera_utils';
 import loadGestureRecognizer from '../utils/loadGestureRecognizer';
 import initCamera from '../utils/initCamera';
 import useCamera from '../hooks/useCamera';
+import getRandomGesture from '../utils/getRandomGesture';
 
 let gestureRecognizer: GestureRecognizer;
 
@@ -45,11 +46,26 @@ function Game() {
   }
 
   return (
-    <>
-      <video playsInline ref={videoRef}></video>
+    <div className='game'>
+      {/* <video playsInline ref={videoRef}></video> */}
+      <section className='game-players'>
+        <article>
+          <span>Computer</span>
+          <div className='game-player'>
+            <img className='bot-avatar' src={getRandomGesture()} alt="" />
+          </div>
+        </article>
 
-      <button onClick={handleStart}>Start Game!</button>
-    </>
+        <article>
+          <span>You</span>
+          <div className='game-player'>
+            <img className='user-avatar' src={getRandomGesture()} alt="" />
+          </div>
+        </article>
+      </section>
+
+      <button className='cta' onClick={handleStart}>Start Game!</button>
+    </div>
   )
 }
 

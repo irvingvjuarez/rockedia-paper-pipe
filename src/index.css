@@ -11,6 +11,8 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  --player-size: 160px;
 }
 
 a {
@@ -52,6 +54,68 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+.cta {
+  background-color: #646cff;
+  color: rgba(255, 255, 255, 0.87);
+  min-width: 150px;
+  width: 50%;
+  max-width: 500px;
+  align-self: center;
+}
+
+.game {
+  height: 80vh;
+  justify-content: center;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  width: inherit;
+}
+
+.game-players {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: column;
+  height: 70%;
+  max-height: 500px;
+  width: 90%;
+  max-width: 1250px;
+  margin: 0 auto;
+}
+
+.game-player {
+  width: var(--player-size);
+  height: var(--player-size);
+  overflow: hidden;
+  border-radius: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  border: 3px solid #646cff;
+}
+
+.game-player > img {
+  width: calc(var(--player-size) - 30px);
+  height: calc(var(--player-size) - 30px);
+}
+
+.bot-avatar {
+  transform: rotate(25deg);
+}
+
+.user-avatar {
+  transform: rotate(-25deg);
+}
+
+@media screen and (min-width: 500px) {
+  .game-players {
+    flex-direction: row;
+  }
 }
 
 @media (prefers-color-scheme: light) {
