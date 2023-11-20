@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import { GestureRecognizer } from "@mediapipe/tasks-vision"
 import handsOnScreen from "../utils/handsOnScreen";
-import { GameState, GameStatusEnum } from "../pages/Game";
+import { GameState, GameStatusEnum } from "./useGame";
 
 export enum CameraStatusType {
     'waitHands',
-    'showingHands'
+    'showingHands',
+    'pause'
 }
 
-type CameraStatus = CameraStatusType.waitHands | CameraStatusType.showingHands | null;
+type CameraStatus = CameraStatusType.pause | CameraStatusType.waitHands | CameraStatusType.showingHands | null;
 
 function useCamera(status: GameState['status']) {
     const [cameraStatus, setCameraStatus] = useState<CameraStatus>(null);

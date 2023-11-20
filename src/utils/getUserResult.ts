@@ -16,12 +16,6 @@ async function getUserResult(videoEl: HTMLVideoElement, gestureRecognizer: Gestu
   if (gestures.length == 1) {
     result = gestures[0][0];
   }
-  // if (results.landmarks.length > 0) {
-  //   drawConnectors(ctx, results.landmarks[0], HAND_CONNECTIONS, {
-  //     color: "#00FF00",
-  //     lineWidth: 2
-  //   });
-  // }
   const captureImage = canvas.toDataURL("image/jpeg");
   return [captureImage, result];
 }
