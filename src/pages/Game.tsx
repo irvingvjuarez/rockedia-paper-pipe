@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { GestureRecognizer } from "@mediapipe/tasks-vision"
 import '../App.css'
 import { Camera } from '@mediapipe/camera_utils';
@@ -25,6 +25,7 @@ export type GameState = {
 
 function Game() {
   const [state, setState] = useState<GameState>({status: GameStatusEnum.init, payload: null});
+  const [countdown, setCountdown] = useState(3);
   const videoRef = useRef<null | HTMLVideoElement>(null);
   const {getFramingHandler, cameraStatus} = useCamera(state.status);
   const isStatusSuccess = state.status === GameStatusEnum.success;
@@ -49,6 +50,14 @@ function Game() {
   if (state.status === GameStatusEnum.error) {
     throw new Error((state.payload as Error).message);
   }
+
+  useEffect(() => {
+    if (cameraStatus === CameraStatusType.showingHands && countdown > 1) {
+      setTimeout(() => {
+        setCountdown(prev => prev - 1);
+      }, 1000)
+    }
+  }, [cameraStatus, countdown])
 
   return (
     <div className='game'>
@@ -76,6 +85,13 @@ function Game() {
                 Please show one hand to the camera
               </div>
             )}
+
+            {cameraStatus === CameraStatusType.showingHands && (
+              <div className='video-message'>
+                {countdown}
+              </div>
+            )}
+
             <video
               hidden={isStatusSuccess ? false : true}
               playsInline
