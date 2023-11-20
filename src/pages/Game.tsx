@@ -7,6 +7,7 @@ import initCamera from '../utils/initCamera';
 import useCamera, { CameraStatusType } from '../hooks/useCamera';
 import getRandomGesture from '../utils/getRandomGesture';
 import Loader from '../components/Loader';
+import getComputerResult from '../utils/getComputerResult';
 
 let gestureRecognizer: GestureRecognizer;
 
@@ -52,7 +53,7 @@ function Game() {
   }
 
   useEffect(() => {
-    if (cameraStatus === CameraStatusType.showingHands && countdown > 1) {
+    if (cameraStatus === CameraStatusType.showingHands && countdown > 0) {
       setTimeout(() => {
         setCountdown(prev => prev - 1);
       }, 1000)
@@ -64,9 +65,23 @@ function Game() {
       <section className='game-players'>
         <article className='player-frame'>
           <span className='player-title'>Computer</span>
-          <div className='game-player'>
-            <img className='bot-avatar' src={getRandomGesture()} alt="" />
-          </div>
+          {cameraStatus === CameraStatusType.showingHands ? (
+            <div className='video-container'>
+              <video autoPlay muted playsInline className='video'>
+                <source
+                  src={getComputerResult()}
+                  type="video/mp4" />
+              </video>
+            </div>
+          ) : (
+            <div className='game-player'>
+              <img
+                className='bot-avatar'
+                src={getRandomGesture()}
+                alt=""
+              />
+            </div>
+          )}
         </article>
 
         <article className='player-frame'>
@@ -86,7 +101,7 @@ function Game() {
               </div>
             )}
 
-            {cameraStatus === CameraStatusType.showingHands && (
+            {cameraStatus === CameraStatusType.showingHands && countdown > 0 && (
               <div className='video-message'>
                 {countdown}
               </div>
