@@ -8,6 +8,7 @@ import useCamera, { CameraStatusType } from '../hooks/useCamera';
 import getRandomGesture from '../utils/getRandomGesture';
 import Loader from '../components/Loader';
 import getComputerResult from '../utils/getComputerResult';
+import getUserResult from '../utils/getUserResult';
 
 let gestureRecognizer: GestureRecognizer;
 
@@ -58,6 +59,11 @@ function Game() {
         setCountdown(prev => prev - 1);
       }, 1000)
     }
+
+    if (countdown === 0) {
+      getUserResult(videoRef.current as HTMLVideoElement, gestureRecognizer)
+        .then(value => console.log(value))
+    }
   }, [cameraStatus, countdown])
 
   return (
@@ -67,7 +73,7 @@ function Game() {
           <span className='player-title'>Computer</span>
           {cameraStatus === CameraStatusType.showingHands ? (
             <div className='video-container'>
-              <video autoPlay muted playsInline className='video'>
+              <video autoPlay playsInline className='video'>
                 <source
                   src={getComputerResult()}
                   type="video/mp4" />

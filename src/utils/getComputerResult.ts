@@ -1,7 +1,7 @@
 const possibleResults = [
     "https://storage.googleapis.com/khanhlvg_ml/rock_paper_scissor/paper.mp4",
     "https://storage.googleapis.com/khanhlvg_ml/rock_paper_scissor/rock.mp4",
-    "https://storage.googleapis.com/khanhlvg_ml/rock_paper_scissor/scissors.mp4"
+    "https://storage.googleapis.com/khanhlvg_ml/rock_paper_scissor/scissor.mp4"
 ]
 
 function getComputerResult() {
