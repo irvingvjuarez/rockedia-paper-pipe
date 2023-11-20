@@ -1,26 +1,35 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GestureRecognizer } from "@mediapipe/tasks-vision"
 import handsOnScreen from "../utils/handsOnScreen";
+import { GameState, GameStatusEnum } from "../pages/Game";
 
-enum StatusType {
-    'waitHands'
+export enum CameraStatusType {
+    'waitHands',
+    'showingHands'
 }
 
-type Status = StatusType.waitHands;
+type CameraStatus = CameraStatusType.waitHands | CameraStatusType.showingHands | null;
 
-function useCamera() {
-    const [status, setStatus] = useState<Status>(StatusType.waitHands);
+function useCamera(status: GameState['status']) {
+    const [cameraStatus, setCameraStatus] = useState<CameraStatus>(null);
 
     const getFramingHandler = (gestureRecognizer: GestureRecognizer, htmlEl: HTMLVideoElement) => {
         return async () => {
-            if (status === StatusType.waitHands && handsOnScreen(gestureRecognizer, htmlEl)) {
-                console.log('Showing hands')
+            if (handsOnScreen(gestureRecognizer, htmlEl)) {
+                setCameraStatus(CameraStatusType.showingHands)
             }
         }
     }
 
+    useEffect(() => {
+        if (status === GameStatusEnum.success) {
+            setCameraStatus(CameraStatusType.waitHands);
+        }
+    }, [status]);
+
     return {
-        getFramingHandler
+        getFramingHandler,
+        cameraStatus
     }
 }
 
