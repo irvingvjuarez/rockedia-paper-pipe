@@ -17,11 +17,12 @@ export enum GameStatusEnum {
   'idle',
   'error',
   'success',
-  'init'
+  'init',
+  'done'
 }
 
 export type GameState = {
-  status: GameStatusEnum.error | GameStatusEnum.idle | GameStatusEnum.success | GameStatusEnum.init,
+  status: GameStatusEnum.done | GameStatusEnum.error | GameStatusEnum.idle | GameStatusEnum.success | GameStatusEnum.init,
   payload: unknown
 };
 
@@ -32,6 +33,12 @@ function Game() {
   const {getFramingHandler, cameraStatus} = useCamera(state.status);
   const isStatusSuccess = state.status === GameStatusEnum.success;
   let camera: Camera;
+
+  if (state.status === GameStatusEnum.done) {
+    (async function () {
+      if (camera !== undefined) await camera.stop()
+    })()
+  }
 
   const handleStart = async () => {
     try {
@@ -54,16 +61,19 @@ function Game() {
   }
 
   useEffect(() => {
-    if (cameraStatus === CameraStatusType.showingHands && countdown > 0) {
-      setTimeout(() => {
-        setCountdown(prev => prev - 1);
-      }, 1000)
-    }
+    (async function() {
+      if (cameraStatus === CameraStatusType.showingHands && countdown > 0) {
+        setTimeout(() => {
+          setCountdown(prev => prev - 1);
+        }, 1000)
+      }
 
-    if (countdown === 0) {
-      getUserResult(videoRef.current as HTMLVideoElement, gestureRecognizer)
-        .then(value => console.log(value))
-    }
+      if (countdown === 0) {
+        const result = await getUserResult(videoRef.current as HTMLVideoElement, gestureRecognizer)
+        console.log(result)
+        setState(prev => ({state: GameStatusEnum.done, payload: result}))
+      }
+    })()
   }, [cameraStatus, countdown])
 
   return (
