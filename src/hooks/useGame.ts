@@ -8,27 +8,6 @@ import initCamera from "../utils/initCamera";
 import doesUserWin from "../utils/doesUserWin";
 import getComputerResult from "../utils/getComputerResult";
 
-// eslint-disable-next-line react-refresh/only-export-components
-export enum GameStatusEnum {
-  "idle",
-  "error",
-  "success",
-  "init",
-  "done",
-  "result"
-}
-
-export type GameState = {
-  status:
-    | GameStatusEnum.done
-    | GameStatusEnum.error
-    | GameStatusEnum.idle
-    | GameStatusEnum.success
-    | GameStatusEnum.init
-    | GameStatusEnum.result;
-  payload: unknown;
-};
-
 let gestureRecognizer: GestureRecognizer;
 
 function useGame() {

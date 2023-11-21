@@ -1,8 +1,7 @@
 import { GestureRecognizer } from "@mediapipe/tasks-vision"
 
-async function getUserResult(videoEl: HTMLVideoElement, gestureRecognizer: GestureRecognizer) {
+async function getUserResult(videoEl: HTMLVideoElement, gestureRecognizer: GestureRecognizer): UserResult {
   const canvas = document.createElement("canvas");
-  let result;
   canvas.width = 1280;
   canvas.height = 720;
 
@@ -13,9 +12,8 @@ async function getUserResult(videoEl: HTMLVideoElement, gestureRecognizer: Gestu
   }
   const results = await gestureRecognizer.recognize(canvas);
   const gestures = results.gestures;
-  if (gestures.length == 1) {
-    result = gestures[0][0];
-  }
+  const result = gestures[0][0] as unknown as UserResult;
+
   // const captureImage = canvas.toDataURL("image/jpeg");
   return result;
 }

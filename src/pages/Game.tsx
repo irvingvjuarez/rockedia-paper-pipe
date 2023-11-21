@@ -3,8 +3,7 @@ import { CameraStatusType } from '../hooks/useCamera';
 import getRandomGesture from '../utils/getRandomGesture';
 import Loader from '../components/Loader';
 import getComputerResult from '../utils/getComputerResult';
-import useGame, { GameStatusEnum } from '../hooks/useGame';
-import doesUserWin from '../utils/doesUserWin';
+import useGame from '../hooks/useGame';
 
 function Game() {
   const {

@@ -1,14 +1,4 @@
-export enum FinalResultEnum {
-    'Tie' = "It's a Tie",
-    'Scissor' = 'Scissor',
-    'Paper' = 'Paper',
-    'Rock' = 'Rock',
-    'None' = 'None',
-    'Win' = 'You WIN',
-    'Lose' = 'You LOSE'
-}
-
-function doesUserWin(resultUrl: string, userResult: {categoryName: string}) {
+function doesUserWin(resultUrl: string, userResult: UserResult) {
     if (userResult === undefined || userResult.categoryName === FinalResultEnum.None) {
         return "Invalid hand gesture"
     }
