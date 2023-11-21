@@ -4,6 +4,7 @@ import getRandomGesture from '../utils/getRandomGesture';
 import Loader from '../components/Loader';
 import getComputerResult from '../utils/getComputerResult';
 import useGame, { GameStatusEnum } from '../hooks/useGame';
+import doesUserWin from '../utils/doesUserWin';
 
 function Game() {
   const {
@@ -12,7 +13,7 @@ function Game() {
     cameraStatus,
     handleStart, videoRef
   } = useGame();
-  const isStatusSuccess = gameState.status === GameStatusEnum.success;
+  const isStatusSuccess = gameState.status === GameStatusEnum.success || gameState.status === GameStatusEnum.result;
 
   if (gameState.status === GameStatusEnum.error) {
     throw new Error((gameState.payload as Error).message);
@@ -53,6 +54,12 @@ function Game() {
             className='video-container'
             hidden={isStatusSuccess ? false : true}
           >
+            {gameState.status === GameStatusEnum.result && (
+              <div className='video-message'>
+                {gameState.payload as string}
+              </div>
+            )}
+
             {cameraStatus === CameraStatusType.waitHands && (
               <div className='video-message'>
                 Please show one hand to the camera

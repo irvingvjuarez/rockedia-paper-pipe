@@ -16,8 +16,8 @@ async function getUserResult(videoEl: HTMLVideoElement, gestureRecognizer: Gestu
   if (gestures.length == 1) {
     result = gestures[0][0];
   }
-  const captureImage = canvas.toDataURL("image/jpeg");
-  return [captureImage, result];
+  // const captureImage = canvas.toDataURL("image/jpeg");
+  return result;
 }
 
 export default getUserResult;

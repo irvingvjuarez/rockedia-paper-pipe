@@ -5,6 +5,8 @@ import { GestureRecognizer } from "@mediapipe/tasks-vision";
 import loadGestureRecognizer from "../utils/loadGestureRecognizer";
 import { Camera } from '@mediapipe/camera_utils';
 import initCamera from "../utils/initCamera";
+import doesUserWin from "../utils/doesUserWin";
+import getComputerResult from "../utils/getComputerResult";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export enum GameStatusEnum {
@@ -13,6 +15,7 @@ export enum GameStatusEnum {
   "success",
   "init",
   "done",
+  "result"
 }
 
 export type GameState = {
@@ -21,7 +24,8 @@ export type GameState = {
     | GameStatusEnum.error
     | GameStatusEnum.idle
     | GameStatusEnum.success
-    | GameStatusEnum.init;
+    | GameStatusEnum.init
+    | GameStatusEnum.result;
   payload: unknown;
 };
 
@@ -35,7 +39,7 @@ function useGame() {
     status: GameStatusEnum.init,
     payload: null,
   });
-  const handleGameState = setGameState;
+  // const handleGameState = setGameState;
 
   const [countdown, setCountdown] = useState(3);
 
@@ -49,10 +53,10 @@ function useGame() {
 
   const handleStart = async () => {
     try {
-      handleGameState(({ payload }) => ({
+      setGameState({
         status: GameStatusEnum.idle,
-        payload,
-      }));
+        payload: getComputerResult(),
+      });
       gestureRecognizer = await loadGestureRecognizer();
 
       camera = initCamera(
@@ -62,13 +66,13 @@ function useGame() {
           videoRef.current as HTMLVideoElement
         )
       );
-      handleGameState(({ payload }) => ({
+      setGameState(({ payload }) => ({
         status: GameStatusEnum.success,
         payload,
       }));
       await camera.start();
     } catch (error) {
-      handleGameState(() => ({ status: GameStatusEnum.error, payload: error }));
+      setGameState(() => ({ status: GameStatusEnum.error, payload: error }));
     }
   };
 
@@ -85,7 +89,11 @@ function useGame() {
           videoRef.current as HTMLVideoElement,
           gestureRecognizer
         );
-        console.log(result);
+
+        setGameState(prev => ({
+          status: GameStatusEnum.result,
+          payload: doesUserWin(prev.payload as string, result)
+        }))
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -93,7 +101,6 @@ function useGame() {
 
   return {
     gameState,
-    handleGameState,
     countdown,
     getFramingHandler,
     cameraStatus,
