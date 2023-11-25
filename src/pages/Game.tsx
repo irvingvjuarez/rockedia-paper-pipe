@@ -4,6 +4,7 @@ import getRandomGesture from '../utils/getRandomGesture';
 import Loader from '../components/Loader';
 import getComputerResult from '../utils/getComputerResult';
 import useGame from '../hooks/useGame';
+import { GameStatusEnum } from '../global.enum';
 
 function Game() {
   const {
@@ -17,6 +18,10 @@ function Game() {
   if (gameState.status === GameStatusEnum.error) {
     throw new Error((gameState.payload as Error).message);
   }
+
+  // if (gameState.status === GameStatusEnum.result)
+  //   console.log(gameState.payload);
+
 
   return (
     <div className='game'>

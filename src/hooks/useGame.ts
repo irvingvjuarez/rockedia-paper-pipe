@@ -7,6 +7,7 @@ import { Camera } from '@mediapipe/camera_utils';
 import initCamera from "../utils/initCamera";
 import doesUserWin from "../utils/doesUserWin";
 import getComputerResult from "../utils/getComputerResult";
+import { GameStatusEnum } from "../global.enum";
 
 let gestureRecognizer: GestureRecognizer;
 
@@ -18,7 +19,6 @@ function useGame() {
     status: GameStatusEnum.init,
     payload: null,
   });
-  // const handleGameState = setGameState;
 
   const [countdown, setCountdown] = useState(3);
 
@@ -69,9 +69,14 @@ function useGame() {
           gestureRecognizer
         );
 
+        const getFinalResult = (computerResult: string) => {
+          const finalResult = doesUserWin(computerResult, result)
+          return finalResult;
+        }
+
         setGameState(prev => ({
           status: GameStatusEnum.result,
-          payload: doesUserWin(prev.payload as string, result)
+          payload: getFinalResult(prev.payload as string)
         }))
       }
     })();

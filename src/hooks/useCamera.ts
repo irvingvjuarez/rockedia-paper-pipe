@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { GestureRecognizer } from "@mediapipe/tasks-vision"
 import handsOnScreen from "../utils/handsOnScreen";
+import { GameStatusEnum } from "../global.enum";
 
 export enum CameraStatusType {
     'waitHands',

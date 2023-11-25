@@ -1,3 +1,5 @@
+import { FinalResultEnum } from "../global.enum";
+
 function doesUserWin(resultUrl: string, userResult: UserResult) {
     if (userResult === undefined || userResult.categoryName === FinalResultEnum.None) {
         return "Invalid hand gesture"
