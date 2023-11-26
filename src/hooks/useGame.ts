@@ -19,6 +19,7 @@ function useGame() {
     status: GameStatusEnum.init,
     payload: null
   })
+  const isGameStatus = (value: GameState["status"]) => gameState.status === value;
 
   const [countdown, setCountdown] = useState(3);
   const { getFramingHandler, cameraStatus } = useCamera(gameState.status);
@@ -69,7 +70,8 @@ function useGame() {
     getFramingHandler,
     cameraStatus,
     handleStart,
-    videoRef
+    videoRef,
+    isGameStatus
   };
 }
 

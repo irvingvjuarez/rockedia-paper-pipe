@@ -10,7 +10,7 @@ function Game() {
   const {
     gameState,
     countdown,
-    cameraStatus,
+    cameraStatus, isGameStatus,
     handleStart, videoRef
   } = useGame();
   const isStatusSuccess = gameState.status === GameStatusEnum.success || gameState.status === GameStatusEnum.result;
@@ -46,7 +46,7 @@ function Game() {
         <article className='player-frame'>
           <span className='player-title'>You</span>
 
-          {gameState.status === GameStatusEnum.idle && (
+          {isGameStatus(GameStatusEnum.idle) && (
             <Loader />
           )}
 
@@ -54,7 +54,7 @@ function Game() {
             className='video-container'
             hidden={isStatusSuccess ? false : true}
           >
-            {gameState.status === GameStatusEnum.result && (
+            {isGameStatus(GameStatusEnum.result) && (
               <div className='video-message'>
                 {gameState.payload as string}
               </div>
@@ -80,7 +80,7 @@ function Game() {
             ></video>
           </div>
 
-          {gameState.status === GameStatusEnum.init && (
+          {isGameStatus(GameStatusEnum.init) && (
             <div className='game-player'>
               <img className='user-avatar' src={getRandomGesture()} alt="" />
             </div>
