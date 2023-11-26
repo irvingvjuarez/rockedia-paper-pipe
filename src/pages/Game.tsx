@@ -1,16 +1,16 @@
 import '../App.css'
 import { CameraStatusType } from '../hooks/useCamera';
 import Loader from '../components/Loader';
-import getComputerResult from '../utils/getComputerResult';
 import useGame from '../hooks/useGame';
 import { GameStatusEnum } from '../global.enum';
 import GamePlayer from '../components/GamePlayer';
+import PlayerFrame from '../components/PlayerFrame';
 
 function Game() {
   const {
     gameState,
-    countdown,
-    cameraStatus, isGameStatus,
+    countdown, isCameraStatus,
+    isGameStatus,
     handleStart, videoRef
   } = useGame();
   const isStatusSuccess = gameState.status === GameStatusEnum.success || gameState.status === GameStatusEnum.result;
@@ -22,24 +22,21 @@ function Game() {
   return (
     <div className='game'>
       <section className='game-players'>
-        <article className='player-frame'>
-          <span className='player-title'>Computer</span>
-          {cameraStatus === CameraStatusType.showingHands ? (
+        <PlayerFrame role='bot'>
+          {isCameraStatus(CameraStatusType.showingHands) ? (
             <div className='video-container'>
               <video autoPlay playsInline className='video'>
                 <source
-                  src={getComputerResult()}
+                  src={gameState.payload as string}
                   type="video/mp4" />
               </video>
             </div>
           ) : (
             <GamePlayer role='bot' />
           )}
-        </article>
+        </PlayerFrame>
 
-        <article className='player-frame'>
-          <span className='player-title'>You</span>
-
+        <PlayerFrame role='user'>
           {isGameStatus(GameStatusEnum.idle) && (
             <Loader />
           )}
@@ -54,13 +51,13 @@ function Game() {
               </div>
             )}
 
-            {cameraStatus === CameraStatusType.waitHands && (
+            {isCameraStatus(CameraStatusType.waitHands) && (
               <div className='video-message'>
                 Please show one hand to the camera
               </div>
             )}
 
-            {cameraStatus === CameraStatusType.showingHands && countdown > 0 && (
+            {isCameraStatus(CameraStatusType.showingHands) && countdown > 0 && (
               <div className='video-message'>
                 {countdown}
               </div>
@@ -77,7 +74,7 @@ function Game() {
           {isGameStatus(GameStatusEnum.init) && (
             <GamePlayer />
           )}
-        </article>
+        </PlayerFrame>
       </section>
 
       <button className='cta' onClick={handleStart}>Start Game!</button>

@@ -1,6 +1,9 @@
 import { FinalResultEnum } from "../global.enum";
+import { UserResult } from "../type";
 
 function doesUserWin(resultUrl: string, userResult: UserResult) {
+    console.log({ resultUrl, userResult })
+
     if (userResult === undefined || userResult.categoryName === FinalResultEnum.None) {
         return "Invalid hand gesture"
     }

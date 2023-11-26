@@ -23,6 +23,7 @@ function useGame() {
 
   const [countdown, setCountdown] = useState(3);
   const { getFramingHandler, cameraStatus } = useCamera(gameState.status);
+  const isCameraStatus = (value: CameraStatusType) => cameraStatus === value;
 
   const handleStart = async () => {
     try {
@@ -68,10 +69,10 @@ function useGame() {
     gameState,
     countdown,
     getFramingHandler,
-    cameraStatus,
     handleStart,
     videoRef,
-    isGameStatus
+    isGameStatus,
+    isCameraStatus
   };
 }
 
