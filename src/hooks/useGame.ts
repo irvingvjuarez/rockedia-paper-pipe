@@ -1,13 +1,13 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useReducer, Reducer } from "react";
 import useCamera, { CameraStatusType } from "./useCamera";
 import getUserResult from "../utils/getUserResult";
 import { GestureRecognizer } from "@mediapipe/tasks-vision";
 import loadGestureRecognizer from "../utils/loadGestureRecognizer";
 import { Camera } from '@mediapipe/camera_utils';
 import initCamera from "../utils/initCamera";
-import doesUserWin from "../utils/doesUserWin";
-import getComputerResult from "../utils/getComputerResult";
 import { GameStatusEnum } from "../global.enum";
+import gameReducer from "../reducers/game.reducer";
+import { GameState, ReducerAction } from "../type";
 
 let gestureRecognizer: GestureRecognizer;
 
@@ -15,27 +15,17 @@ function useGame() {
   const videoRef = useRef<null | HTMLVideoElement>(null);
   let camera: Camera
 
-  const [gameState, setGameState] = useState<GameState>({
+  const [gameState, dispatch] = useReducer<Reducer<GameState, ReducerAction>>(gameReducer, {
     status: GameStatusEnum.init,
-    payload: null,
-  });
+    payload: null
+  })
 
   const [countdown, setCountdown] = useState(3);
-
   const { getFramingHandler, cameraStatus } = useCamera(gameState.status);
-
-  // if (gameState.status === GameStatusEnum.done) {
-  //   (async function () {
-  //     if (camera !== undefined) await camera.stop()
-  //   })()
-  // }
 
   const handleStart = async () => {
     try {
-      setGameState({
-        status: GameStatusEnum.idle,
-        payload: getComputerResult(),
-      });
+      dispatch({type: GameStatusEnum.idle})
       gestureRecognizer = await loadGestureRecognizer();
 
       camera = initCamera(
@@ -45,13 +35,11 @@ function useGame() {
           videoRef.current as HTMLVideoElement
         )
       );
-      setGameState(({ payload }) => ({
-        status: GameStatusEnum.success,
-        payload,
-      }));
+
+      dispatch({type: GameStatusEnum.success})
       await camera.start();
     } catch (error) {
-      setGameState(() => ({ status: GameStatusEnum.error, payload: error }));
+      dispatch({type: GameStatusEnum.error, payload: error});
     }
   };
 
@@ -69,15 +57,7 @@ function useGame() {
           gestureRecognizer
         );
 
-        const getFinalResult = (computerResult: string) => {
-          const finalResult = doesUserWin(computerResult, result)
-          return finalResult;
-        }
-
-        setGameState(prev => ({
-          status: GameStatusEnum.result,
-          payload: getFinalResult(prev.payload as string)
-        }))
+        dispatch({type: GameStatusEnum.result, payload: result});
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps

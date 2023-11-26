@@ -1,3 +1,5 @@
+import { GameStatusEnum } from "./global.enum";
+
 // Game state
 type GameState = {
   status:
@@ -13,4 +15,10 @@ type GameState = {
 // User results
 type UserResult = {
   categoryName: FinalResultEnum
+}
+
+// Reducer Action
+type ReducerAction = {
+  type: GameStatusEnum,
+  payload?: unknown
 }

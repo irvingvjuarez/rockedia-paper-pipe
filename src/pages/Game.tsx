@@ -19,10 +19,6 @@ function Game() {
     throw new Error((gameState.payload as Error).message);
   }
 
-  // if (gameState.status === GameStatusEnum.result)
-  //   console.log(gameState.payload);
-
-
   return (
     <div className='game'>
       <section className='game-players'>
