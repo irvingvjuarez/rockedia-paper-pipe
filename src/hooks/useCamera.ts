@@ -13,6 +13,7 @@ type CameraStatus = CameraStatusType.pause | CameraStatusType.waitHands | Camera
 
 function useCamera(status: GameState['status']) {
     const [cameraStatus, setCameraStatus] = useState<CameraStatus>(null);
+    const handleCameraStatus = setCameraStatus;
 
     const getFramingHandler = (gestureRecognizer: GestureRecognizer, htmlEl: HTMLVideoElement) => {
         return async () => {
@@ -30,7 +31,8 @@ function useCamera(status: GameState['status']) {
 
     return {
         getFramingHandler,
-        cameraStatus
+        cameraStatus,
+        handleCameraStatus
     }
 }
 

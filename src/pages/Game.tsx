@@ -12,7 +12,7 @@ function Game() {
   const {
     gameState,
     countdown, isCameraStatus,
-    isGameStatus,
+    isGameStatus, handleNext,
     handleStart, videoRef
   } = useGame();
   const isStatusSuccess = gameState.status === GameStatusEnum.success || gameState.status === GameStatusEnum.result;
@@ -83,7 +83,7 @@ function Game() {
         <GameHandlers
           onStart={handleStart}
           onFinish={() => console.log('Finished!')}
-          onNext={() => console.log('Next')}
+          onNext={handleNext}
         />
       </div>
     </GameContext.Provider>

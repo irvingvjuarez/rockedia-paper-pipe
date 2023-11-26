@@ -8,8 +8,10 @@ import initCamera from "../utils/initCamera";
 import { GameStatusEnum } from "../global.enum";
 import gameReducer from "../reducers/game.reducer";
 import { GameState, ReducerAction } from "../type";
+import getComputerResult from "../utils/getComputerResult";
 
 let gestureRecognizer: GestureRecognizer;
+const INITIAL_COUNTDOWN = 3;
 
 function useGame() {
   const videoRef = useRef<null | HTMLVideoElement>(null);
@@ -21,8 +23,8 @@ function useGame() {
   })
   const isGameStatus = (value: GameState["status"]) => gameState.status === value;
 
-  const [countdown, setCountdown] = useState(3);
-  const { getFramingHandler, cameraStatus } = useCamera(gameState.status);
+  const [countdown, setCountdown] = useState(INITIAL_COUNTDOWN);
+  const { getFramingHandler, cameraStatus, handleCameraStatus } = useCamera(gameState.status);
   const isCameraStatus = (value: CameraStatusType) => cameraStatus === value;
 
   const handleStart = async () => {
@@ -44,6 +46,12 @@ function useGame() {
       dispatch({type: GameStatusEnum.error, payload: error});
     }
   };
+
+  const handleNext = () => {
+    dispatch({type: GameStatusEnum.success, payload: getComputerResult() })
+    handleCameraStatus(CameraStatusType.waitHands)
+    setCountdown(INITIAL_COUNTDOWN);
+  }
 
   useEffect(() => {
     (async function () {
@@ -72,7 +80,8 @@ function useGame() {
     handleStart,
     videoRef,
     isGameStatus,
-    isCameraStatus
+    isCameraStatus,
+    handleNext
   };
 }
 
