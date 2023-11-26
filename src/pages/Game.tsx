@@ -6,6 +6,7 @@ import { GameStatusEnum } from '../global.enum';
 import GamePlayer from '../components/GamePlayer';
 import PlayerFrame from '../components/PlayerFrame';
 import GameContext from '../contexts/game.context';
+import GameHandlers from '../components/GameHandlers';
 
 function Game() {
   const {
@@ -79,7 +80,11 @@ function Game() {
           </PlayerFrame>
         </section>
 
-        <button className='cta' onClick={handleStart}>Start Game!</button>
+        <GameHandlers
+          onStart={handleStart}
+          onFinish={() => console.log('Finished!')}
+          onNext={() => console.log('Next')}
+        />
       </div>
     </GameContext.Provider>
   )
