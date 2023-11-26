@@ -1,10 +1,10 @@
 import '../App.css'
 import { CameraStatusType } from '../hooks/useCamera';
-import getRandomGesture from '../utils/getRandomGesture';
 import Loader from '../components/Loader';
 import getComputerResult from '../utils/getComputerResult';
 import useGame from '../hooks/useGame';
 import { GameStatusEnum } from '../global.enum';
+import GamePlayer from '../components/GamePlayer';
 
 function Game() {
   const {
@@ -33,13 +33,7 @@ function Game() {
               </video>
             </div>
           ) : (
-            <div className='game-player'>
-              <img
-                className='bot-avatar'
-                src={getRandomGesture()}
-                alt=""
-              />
-            </div>
+            <GamePlayer role='bot' />
           )}
         </article>
 
@@ -81,9 +75,7 @@ function Game() {
           </div>
 
           {isGameStatus(GameStatusEnum.init) && (
-            <div className='game-player'>
-              <img className='user-avatar' src={getRandomGesture()} alt="" />
-            </div>
+            <GamePlayer />
           )}
         </article>
       </section>
