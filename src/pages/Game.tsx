@@ -10,7 +10,7 @@ import GameHandlers from '../components/GameHandlers';
 
 function Game() {
   const {
-    gameState,
+    gameState, handleFinish,
     countdown, isCameraStatus,
     isGameStatus, handleNext,
     handleStart, videoRef
@@ -82,7 +82,7 @@ function Game() {
 
         <GameHandlers
           onStart={handleStart}
-          onFinish={() => console.log('Finished!')}
+          onFinish={handleFinish}
           onNext={handleNext}
         />
       </div>

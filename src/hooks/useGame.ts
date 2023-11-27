@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useReducer, Reducer } from "react";
+import { useCallback, useEffect, useRef, useState, useReducer, Reducer } from "react";
 import useCamera, { CameraStatusType } from "./useCamera";
 import getUserResult from "../utils/getUserResult";
 import { GestureRecognizer } from "@mediapipe/tasks-vision";
@@ -9,11 +9,13 @@ import { GameStatusEnum } from "../global.enum";
 import gameReducer from "../reducers/game.reducer";
 import { GameState, ReducerAction } from "../type";
 import getComputerResult from "../utils/getComputerResult";
+import { useNavigate } from "react-router-dom";
 
 let gestureRecognizer: GestureRecognizer;
 const INITIAL_COUNTDOWN = 3;
 
 function useGame() {
+  const navigate = useNavigate()
   const videoRef = useRef<null | HTMLVideoElement>(null);
   let camera: Camera
 
@@ -46,6 +48,11 @@ function useGame() {
       dispatch({type: GameStatusEnum.error, payload: error});
     }
   };
+
+  const handleFinish = useCallback(async () => {
+    await camera.stop();
+    navigate('/');
+  }, [camera])
 
   const handleNext = () => {
     dispatch({type: GameStatusEnum.success, payload: getComputerResult() })
@@ -81,7 +88,8 @@ function useGame() {
     videoRef,
     isGameStatus,
     isCameraStatus,
-    handleNext
+    handleNext,
+    handleFinish
   };
 }
 
