@@ -1,5 +1,5 @@
 import GameContext from "../contexts/game.context";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FinalResultEnum, GameStatusEnum } from "../global.enum";
 
 type PlayerFrameProps = {
@@ -9,21 +9,29 @@ type PlayerFrameProps = {
 
 function PlayerFrame({role, children}: PlayerFrameProps) {
     const context = useContext(GameContext);
-    let result = null;
+    const [result, setResult] = useState<null | number>(null);
 
-    if (context?.status === GameStatusEnum.result) {
-        if (!result) result = 0;
 
-        switch(context.payload) {
-            case FinalResultEnum.Win:
-                result = role === 'user' ? result + 1 : result;
-                break;
-            case FinalResultEnum.Lose:
-                result = role === 'bot' ? result + 1 : result;
-                break;
-            default: result += 0;
+    useEffect(() => {
+        if (context?.status === GameStatusEnum.result) {
+            switch(context.payload) {
+                case FinalResultEnum.Win:
+                    if (!result && role === 'user')
+                        setResult(1);
+                    else if (role === 'user')
+                        setResult(prev => prev + 1);
+                    break;
+                case FinalResultEnum.Lose:
+                    if (!result && role === 'bot')
+                        setResult(1);
+                    else if (role === 'bot')
+                        setResult(prev => prev + 1);
+                    break;
+                default:
+                    if (!result) setResult(0);
+            }
         }
-    }
+    }, [context?.payload, context?.status])
 
     return (
         <article className='player-frame'>
