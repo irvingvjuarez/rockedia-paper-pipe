@@ -1,4 +1,5 @@
 import { GestureRecognizer } from "@mediapipe/tasks-vision"
+import { FinalResultEnum } from "../global.enum";
 
 async function getUserResult(videoEl: HTMLVideoElement, gestureRecognizer: GestureRecognizer): UserResult {
   const canvas = document.createElement("canvas");
@@ -12,10 +13,15 @@ async function getUserResult(videoEl: HTMLVideoElement, gestureRecognizer: Gestu
   }
   const results = await gestureRecognizer.recognize(canvas);
   const gestures = results.gestures;
-  const result = gestures[0][0] as unknown as UserResult;
 
+  if (gestures.length === 0) return {
+    categoryName: FinalResultEnum.None
+  }
+
+  const result = gestures[0][0] as unknown as UserResult;
   // const captureImage = canvas.toDataURL("image/jpeg");
   return result;
+
 }
 
 export default getUserResult;
