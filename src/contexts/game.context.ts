@@ -1,6 +1,8 @@
 import { createContext } from "react";
-import { GameState } from "../type";
+import { GameState, ReducerAction } from "../type";
 
-const GameContext = createContext<null | GameState>(null);
+type InitialGameState = GameState & { dispatch: React.Dispatch<ReducerAction> }
+
+const GameContext = createContext<null | InitialGameState>(null);
 
 export default GameContext;

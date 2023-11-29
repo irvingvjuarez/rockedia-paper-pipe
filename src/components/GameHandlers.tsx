@@ -21,8 +21,8 @@ function GameHandlers({onStart, onNext, onFinish}: GameHandlersProps) {
                     <button className='cta' onClick={onFinish}>Finish game</button>
                 </>
             )
-        // case GameStatusEnum.over:
-        //     return <button className='cta' onClick={onFinish}>Finish game</button>
+        case GameStatusEnum.over:
+            return <button className='cta' onClick={onFinish}>Finish game</button>
         default: return null
     }
 }

@@ -13,6 +13,12 @@ function PlayerFrame({role, children}: PlayerFrameProps) {
 
 
     useEffect(() => {
+        if (result && result >= 3) {
+            context?.dispatch({type: GameStatusEnum.over})
+        }
+    }, [result])
+
+    useEffect(() => {
         if (context?.status === GameStatusEnum.result) {
             switch(context.payload) {
                 case FinalResultEnum.Win:

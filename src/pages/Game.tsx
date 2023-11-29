@@ -13,16 +13,20 @@ function Game() {
     gameState, handleFinish,
     countdown, isCameraStatus,
     isGameStatus, handleNext,
-    handleStart, videoRef
+    handleStart, videoRef,
+    dispatch
   } = useGame();
-  const isStatusSuccess = gameState.status === GameStatusEnum.success || gameState.status === GameStatusEnum.result;
+  const isStatusSuccess = isGameStatus(GameStatusEnum.success) || isGameStatus(GameStatusEnum.result);
+  const isGameOver = isGameStatus(GameStatusEnum.over);
 
   if (gameState.status === GameStatusEnum.error) {
     throw new Error((gameState.payload as Error).message);
   }
 
+  const initialGameState = {...gameState, dispatch}
+
   return (
-    <GameContext.Provider value={gameState}>
+    <GameContext.Provider value={initialGameState}>
       <div className='game'>
         <section className='game-players'>
           <PlayerFrame role='bot'>
@@ -46,9 +50,9 @@ function Game() {
 
             <div
               className='video-container'
-              hidden={isStatusSuccess ? false : true}
+              hidden={(isStatusSuccess || isGameOver) ? false : true}
             >
-              {isGameStatus(GameStatusEnum.result) && (
+              {(isGameStatus(GameStatusEnum.result) || isGameOver) && (
                 <div className='video-message'>
                   {gameState.payload as string}
                 </div>
@@ -67,7 +71,7 @@ function Game() {
               )}
 
               <video
-                hidden={isStatusSuccess ? false : true}
+                hidden={(isStatusSuccess || isGameOver) ? false : true}
                 playsInline
                 ref={videoRef}
                 className='video'

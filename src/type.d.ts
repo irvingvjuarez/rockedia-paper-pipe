@@ -8,6 +8,7 @@ type GameState = {
     | GameStatusEnum.idle
     | GameStatusEnum.success
     | GameStatusEnum.init
+    | GameStatusEnum.over
     | GameStatusEnum.result;
   payload: unknown;
 };

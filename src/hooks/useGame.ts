@@ -89,7 +89,8 @@ function useGame() {
     isGameStatus,
     isCameraStatus,
     handleNext,
-    handleFinish
+    handleFinish,
+    dispatch
   };
 }
 

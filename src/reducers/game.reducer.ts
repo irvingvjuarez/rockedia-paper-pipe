@@ -8,6 +8,7 @@ function gameReducer(state: GameState, action: ReducerAction): GameState {
         case GameStatusEnum.idle: return { status: action.type, payload: getComputerResult() }
         case GameStatusEnum.success: return { status: action.type, payload: action.payload || state.payload }
         case GameStatusEnum.error: return { status: action.type, payload: action.payload }
+        case GameStatusEnum.over: return { status: action.type, payload: state.payload }
         case GameStatusEnum.result: return { status: action.type, payload: doesUserWin(state.payload as string, action.payload as UserResult) }
         default: throw new Error('Unexpected Action')
     }

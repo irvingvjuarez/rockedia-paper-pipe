@@ -6,6 +6,7 @@ export enum GameStatusEnum {
   "init",
   "done",
   "result",
+  "over"
 }
 
 export enum FinalResultEnum {
