@@ -1,12 +1,9 @@
 import '../App.css'
-import { CameraStatusType } from '../hooks/useCamera';
-import Loader from '../components/Loader';
 import useGame from '../hooks/useGame';
 import { GameStatusEnum } from '../global.enum';
-import GamePlayer from '../components/GamePlayer';
-import PlayerFrame from '../components/PlayerFrame';
 import GameContext from '../contexts/game.context';
 import GameHandlers from '../components/GameHandlers';
+import GamePlayers from '../containers/GamePlayers';
 
 function Game() {
   const {
@@ -16,73 +13,21 @@ function Game() {
     handleStart, videoRef,
     dispatch
   } = useGame();
-  const isStatusSuccess = isGameStatus(GameStatusEnum.success) || isGameStatus(GameStatusEnum.result);
-  const isGameOver = isGameStatus(GameStatusEnum.over);
 
   if (gameState.status === GameStatusEnum.error) {
     throw new Error((gameState.payload as Error).message);
   }
-
   const initialGameState = {...gameState, dispatch}
 
   return (
     <GameContext.Provider value={initialGameState}>
       <div className='game'>
-        <section className='game-players'>
-          <PlayerFrame role='bot'>
-            {isCameraStatus(CameraStatusType.showingHands) ? (
-              <div className='video-container'>
-                <video autoPlay playsInline className='video'>
-                  <source
-                    src={gameState.payload as string}
-                    type="video/mp4" />
-                </video>
-              </div>
-            ) : (
-              <GamePlayer role='bot' />
-            )}
-          </PlayerFrame>
-
-          <PlayerFrame role='user'>
-            {isGameStatus(GameStatusEnum.idle) && (
-              <Loader />
-            )}
-
-            <div
-              className='video-container'
-              hidden={(isStatusSuccess || isGameOver) ? false : true}
-            >
-              {(isGameStatus(GameStatusEnum.result) || isGameOver) && (
-                <div className='video-message'>
-                  {gameState.payload as string}
-                </div>
-              )}
-
-              {isCameraStatus(CameraStatusType.waitHands) && (
-                <div className='video-message'>
-                  Please show one hand to the camera
-                </div>
-              )}
-
-              {isCameraStatus(CameraStatusType.showingHands) && countdown > 0 && (
-                <div className='video-message'>
-                  {countdown}
-                </div>
-              )}
-
-              <video
-                hidden={(isStatusSuccess || isGameOver) ? false : true}
-                playsInline
-                ref={videoRef}
-                className='video'
-              ></video>
-            </div>
-
-            {isGameStatus(GameStatusEnum.init) && (
-              <GamePlayer />
-            )}
-          </PlayerFrame>
-        </section>
+        <GamePlayers
+          isCameraStatus={isCameraStatus}
+          isGameStatus={isGameStatus}
+          videoRef={videoRef}
+          countdown={countdown}
+        />
 
         <GameHandlers
           onStart={handleStart}
