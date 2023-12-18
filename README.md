@@ -1,30 +1,8 @@
-# React + TypeScript + Vite
+# Rockedia-Paper-Pipe
+The classic game of rock-paper-scissors using Machine Learning on Device. So the user can interact in real time with the webcam and the app understands what a given hand gesture means.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A blog was written explaining the key concepts of this app. You can check it out [HERE](https://irvingvjuarez.medium.com/create-your-first-web-app-using-machine-learning-on-device-8f74b0212b96).
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+# Architecture
+Here is an image of the architecture used for this application in a very high level.
+![image](https://github.com/irvingvjuarez/rockedia-paper-pipe/assets/78284565/bff50ccd-1209-4c14-9e61-038b4f02cbc8)
